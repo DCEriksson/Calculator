@@ -1,46 +1,52 @@
-class Calculator:
+def seperatorList(mathStr):
+    mathList = []
+    tempStr = mathStr[0]
+    for i in mathStr[1:]:
+        if i.isnumeric():
+            tempStr += i
+        else:
+            mathList.append(tempStr)
+            mathList.extend(i)
+            tempStr = ""
+    mathList.append(tempStr)
+    return mathList
 
-    def addition(self, num1, num2):
-        # return self.num1 + self.num2
-        return num1 + num2
+def multiplication(lst):
+    numberOfMulti = lst.count('*')
+    for _ in range(numberOfMulti):
+        index = lst.index('*')
+        tempVal = int(lst[index-1]) * int(lst[index+1])
+        lst.pop(index+1)
+        lst.pop(index)
+        lst.pop(index-1)
+        lst.insert(index-1, str(tempVal))
+    return lst
 
-    def subtract(self, num1, num2):
-        return num1 - num2
+def division(lst):
+    numberOfDivis = lst.count('/')
+    for _ in range(numberOfDivis):
+        index = lst.index('/')
+        tempVal = int(lst[index-1]) / int(lst[index+1])
+        lst.pop(index+1)
+        lst.pop(index)
+        lst.pop(index-1)
+        lst.insert(index-1, str(tempVal))
+    return lst
 
-    def multiplication(self, num1, num2):
-        return num1 * num2
-    
-    def division(self, num1, num2):
-        return float(num1 / num2)
+x = "12/6"
+tempList = seperatorList(x)
+if tempList.count('*'):
+    tempList = multiplication(tempList)
+if tempList.count('/'):
+    tempList = division(tempList)
+if tempList.count('+') or tempList.count('-'):
+    summation = int(tempList[0])
+    for i in range(1, len(tempList), 2):
+        if tempList[i] == '+':
+            summation += int(tempList[i+1])
+        if tempList[i] == '-':
+            summation -= int(tempList[i+1])
+    print(summation)
+else:
+    print(tempList[0])
 
-total = 0
-i = 0
-arithmetic = Calculator()
-while True:
-    if i == 0:
-        num1 = int(input("Enter a number: "))
-        inputAri = input("+, -, * or /: ")
-        num2 = int(input("Enter a number: "))
-        if inputAri == '+':
-            total = arithmetic.addition(num1, num2)
-        elif inputAri == '-':
-            total = arithmetic.subtract(num1, num2)
-        elif inputAri == '*':
-            total = arithmetic.multiplication(num1, num2)
-        elif inputAri == '/':
-            total = arithmetic.division(num1, num2)
-    else:
-        inputAri = input("+, -, *, / or enter to calculate: ")
-        if inputAri == '':
-            print(total)
-            break
-        inputVal = int(input("Enter a number: "))
-        if inputAri == '+':
-            total = arithmetic.addition(total, inputVal)
-        elif inputAri == '-':
-            total = arithmetic.subtract(total, inputVal)
-        elif inputAri == '*':
-            total = arithmetic.multiplication(total, inputVal)  
-        elif inputAri == '/':
-            total = arithmetic.division(total, inputVal)
-    i += 1
